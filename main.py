@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """Make the best-looking food picture (food-picture-01).
 
-Writes one image to /output/entry.png: an extreme close-up of a gourmet
-burger, filling the frame — a glossy toasted bun, melted cheese dripping
-down a charred patty, fresh lettuce and tomato, steam rising, dramatic
-golden-hour light and a dark moody background that makes the food glow.
+Writes one image to /output/entry.png: a steaming bowl of ramen seen
+from above — chopsticks lifting glossy noodles, a halved soft egg with
+a runny yolk, charred pork, chilli oil swirls, green onions and nori,
+on a rustic wooden table in warm light.
 
-The image is original art made for this entry (image.jpg, bundled in this
-repository), not a stock photo. The burger fills the frame, the cheese,
-steam and gloss are what make it appetising at a glance, and the whole
-composition reads at 300 pixels across.
+The image is original art made for this entry (image.jpg, bundled in
+this repository), not a stock photo. The steam, the gloss of the broth
+and the runny yolk are what make it appetising at a glance, and the
+whole composition reads at 300 pixels across.
 
-The program just copies the bundled image to the output directory, as the
-entry's name stays entry.png whatever its format (this one is a JPEG by
-content, 1024x683, 157,532 bytes — within the 1 MiB and 1024x1024 limits).
-Stdlib only, no network, deterministic.
+The program just copies the bundled image to the output directory, as
+the entry's name stays entry.png whatever its format (this one is a
+JPEG by content, 1024x683, 225,510 bytes — within the 1 MiB and
+1024x1024 limits). Stdlib only, no network, deterministic.
 """
 import os
 import shutil
@@ -60,6 +60,9 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / "entry.png"
     shutil.copyfile(src, out)
+    # Copy integrity: the output must be byte-for-byte the bundled image.
+    if out.read_bytes() != src.read_bytes():
+        raise SystemExit("entry.png differs from the bundled image.jpg")
     # Guard: the gate is a PNG or JPEG by magic bytes, at most 1 MiB and
     # at most 1024x1024 px. Fail loudly here rather than submitting a
     # file the judge would reject as unreadable.
